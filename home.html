@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="CollegeMarketPlace - Buy and sell used items within your campus. Textbooks, electronics, cycles & more.">
+    <title>CollegeMarketPlace | Campus Buy & Sell</title>
+
+    <!-- External CSS -->
+    <link rel="stylesheet" href="css/style.css?v=20260309">
+    <!-- Tailwind CSS via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <!-- jQuery CDN -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+    <!-- Internal CSS (project requirement) -->
+    <style>
+        /* ---- Hero Banner ---- */
+        .hero-banner {
+            background: linear-gradient(135deg, #002f34 0%, #1a565c 50%, #002f34 100%);
+            position: relative;
+            overflow: hidden;
+            padding: 5rem 1rem 4rem;
+            min-height: 380px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Static gradient overlay */
+        .hero-banner::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(60deg,
+                    rgba(58, 119, 255, 0.12) 0%,
+                    rgba(255, 206, 50, 0.1) 30%,
+                    rgba(35, 229, 219, 0.12) 60%,
+                    rgba(58, 119, 255, 0.08) 100%);
+            z-index: 1;
+        }
+
+        /* Static glowing orbs */
+        .hero-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(60px);
+            opacity: 0.3;
+            z-index: 1;
+        }
+
+        .hero-orb.orb-1 {
+            width: 300px;
+            height: 300px;
+            background: #ffce32;
+            top: -80px;
+            left: -60px;
+        }
+
+        .hero-orb.orb-2 {
+            width: 250px;
+            height: 250px;
+            background: #23e5db;
+            bottom: -60px;
+            right: -40px;
+        }
+
+        .hero-orb.orb-3 {
+            width: 200px;
+            height: 200px;
+            background: #3a77ff;
+            top: 30%;
+            left: 60%;
+        }
+
+        /* Hero content */
+        .hero-content {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+        }
+
+        .hero-title {
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: #fff;
+            text-transform: uppercase;
+            letter-spacing: -0.5px;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .hero-title .highlight {
+            color: var(--accent);
+            -webkit-text-fill-color: var(--accent);
+            background: none;
+        }
+
+        .hero-subtitle {
+            color: rgba(255, 255, 255, 0.75);
+            font-size: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        /* Search bar */
+        .hero-search-wrap {
+            max-width: 580px;
+            margin: 0 auto 1.5rem;
+            position: relative;
+        }
+
+        .hero-search-wrap input {
+            width: 100%;
+            padding: 16px 60px 16px 24px;
+            border: 2px solid rgba(255, 255, 255, 0.15);
+            border-radius: 50px;
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(12px);
+            color: #fff;
+            font-size: 0.95rem;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .hero-search-wrap input::placeholder {
+            color: rgba(255, 255, 255, 0.45);
+        }
+
+        .hero-search-wrap input:focus {
+            border-color: var(--accent);
+            background: rgba(255, 255, 255, 0.12);
+            box-shadow: 0 0 30px rgba(255, 206, 50, 0.2);
+        }
+
+        .hero-search-btn {
+            position: absolute;
+            right: 6px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 44px;
+            height: 44px;
+            border: none;
+            border-radius: 50%;
+            background: var(--accent);
+            color: var(--primary);
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .hero-search-btn:hover {
+            transform: translateY(-50%) scale(1.1);
+            box-shadow: 0 4px 20px rgba(255, 206, 50, 0.4);
+        }
+
+        /* Stats counters */
+        .hero-stats {
+            display: flex;
+            justify-content: center;
+            gap: 2.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .hero-stat {
+            text-align: center;
+        }
+
+        .hero-stat-number {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--accent);
+            display: block;
+        }
+
+        .hero-stat-label {
+            font-size: 0.7rem;
+            color: rgba(255, 255, 255, 0.5);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* CTA Button */
+        .hero-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 1.5rem;
+            padding: 12px 32px;
+            border-radius: 50px;
+            background: var(--accent);
+            color: var(--primary);
+            font-weight: 800;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 25px rgba(255, 206, 50, 0.3);
+        }
+
+        .hero-cta:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 8px 35px rgba(255, 206, 50, 0.5);
+        }
+
+        .featured-tag {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: var(--accent);
+            color: var(--primary);
+            font-size: 0.6rem;
+            font-weight: 800;
+            padding: 3px 10px;
+            border-radius: 2px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        @media (max-width: 640px) {
+            .hero-title {
+                font-size: 1.6rem;
+            }
+
+            .hero-stats {
+                gap: 1.5rem;
+            }
+
+            .hero-stat-number {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+
+<body class="flex flex-col min-h-screen">
+
+    <!-- ====== Navbar ====== -->
+    <nav class="navbar">
+        <a href="home.html" class="navbar-logo"><i class="fa-solid fa-graduation-cap"></i> College <span>Market</span>
+            Place</a>
+        <button class="nav-toggle" id="nav-toggle"><i class="fa-solid fa-bars"></i></button>
+        <div class="navbar-actions" id="navbar-actions">
+            <!-- Populated by script.js -->
+        </div>
+    </nav>
+
+    <!-- ====== Hero Search Section ====== -->
+    <section class="hero-banner" id="hero-banner">
+        <!-- Static orbs for color depth -->
+        <div class="hero-orb orb-1"></div>
+        <div class="hero-orb orb-2"></div>
+        <div class="hero-orb orb-3"></div>
+
+        <!-- Content -->
+        <div class="hero-content">
+            <h1 class="hero-title">Campus <span class="highlight">Buy & Sell</span> Platform</h1>
+            <p class="hero-subtitle">Buy cheap. Sell fast. Right here on campus.</p>
+
+            <div class="hero-search-wrap">
+                <input type="text" id="hero-search" placeholder="Search for textbooks, laptops, cycles..."
+                    onkeyup="if(event.key==='Enter') { window.location.href='buy.html?q='+this.value; }">
+                <button class="hero-search-btn"
+                    onclick="window.location.href='buy.html?q='+document.getElementById('hero-search').value">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </button>
+            </div>
+
+            <a href="buy.html" class="hero-cta"><i class="fa-solid fa-store"></i> Browse Products</a>
+
+            <div class="hero-stats">
+                <div class="hero-stat">
+                    <span class="hero-stat-number" id="stat-products">0</span>
+                    <span class="hero-stat-label">Products</span>
+                </div>
+                <div class="hero-stat">
+                    <span class="hero-stat-number" id="stat-users">0</span>
+                    <span class="hero-stat-label">Students</span>
+                </div>
+                <div class="hero-stat">
+                    <span class="hero-stat-number" id="stat-categories">8</span>
+                    <span class="hero-stat-label">Categories</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ====== Category Cards Section ====== -->
+    <section class="category-section">
+        <div class="category-section-header">
+            <h2>Browse Categories</h2>
+            <a href="buy.html">View All →</a>
+        </div>
+        <div class="category-grid">
+            <a href="buy.html?cat=Textbooks" class="category-card">
+                <div class="category-icon-wrap" style="background:#6c63ff;"><i class="fa-solid fa-book"></i></div>
+                <span>Textbooks</span>
+            </a>
+            <a href="buy.html?cat=Electronics" class="category-card">
+                <div class="category-icon-wrap" style="background:#f5a623;"><i class="fa-solid fa-laptop"></i></div>
+                <span>Electronics</span>
+            </a>
+            <a href="buy.html?cat=Cycles" class="category-card">
+                <div class="category-icon-wrap" style="background:#23c985;"><i class="fa-solid fa-bicycle"></i></div>
+                <span>Cycles</span>
+            </a>
+            <a href="buy.html?cat=Furniture" class="category-card">
+                <div class="category-icon-wrap" style="background:#e53935;"><i class="fa-solid fa-couch"></i></div>
+                <span>Furniture</span>
+            </a>
+            <a href="buy.html?cat=Stationery" class="category-card">
+                <div class="category-icon-wrap" style="background:#ab47bc;"><i class="fa-solid fa-pen-ruler"></i></div>
+                <span>Stationery</span>
+            </a>
+            <a href="buy.html?cat=Clothing" class="category-card">
+                <div class="category-icon-wrap" style="background:#e91e8c;"><i class="fa-solid fa-shirt"></i></div>
+                <span>Clothing</span>
+            </a>
+            <a href="buy.html?cat=Sports" class="category-card">
+                <div class="category-icon-wrap" style="background:#00bcd4;"><i class="fa-solid fa-basketball"></i></div>
+                <span>Sports</span>
+            </a>
+            <a href="buy.html?cat=Instruments" class="category-card">
+                <div class="category-icon-wrap" style="background:#ff7043;"><i class="fa-solid fa-guitar"></i></div>
+                <span>Instruments</span>
+            </a>
+        </div>
+    </section>
+
+    <!-- ====== Main Content ====== -->
+    <main class="flex-grow" style="padding: 2rem 8%;">
+
+        <!-- Featured Products -->
+        <h2 class="section-title">Fresh Recommendations</h2>
+        <div class="product-grid" id="featured-grid">
+            <!-- Skeleton loading -->
+            <div class="empty-state" style="grid-column: 1 / -1;">
+                <i class="fa-solid fa-spinner fa-spin"></i>
+                <p>Loading products...</p>
+            </div>
+        </div>
+
+        <!-- How It Works Section -->
+        <section class="mt-16 mb-8">
+            <h2 class="section-title">How It Works</h2>
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mt-6">
+                <div class="text-center p-6" style="background: var(--bg-alt); border-radius: var(--radius-lg);">
+                    <i class="fa-solid fa-user-plus text-3xl mb-4" style="color: var(--blue);"></i>
+                    <h4 class="font-bold text-sm uppercase mb-2">1. Sign Up</h4>
+                    <p class="text-xs" style="color: var(--text-muted);">Create an account with your College ID</p>
+                </div>
+                <div class="text-center p-6" style="background: var(--bg-alt); border-radius: var(--radius-lg);">
+                    <i class="fa-solid fa-magnifying-glass text-3xl mb-4" style="color: var(--blue);"></i>
+                    <h4 class="font-bold text-sm uppercase mb-2">2. Browse</h4>
+                    <p class="text-xs" style="color: var(--text-muted);">Find items listed by your seniors & classmates
+                    </p>
+                </div>
+                <div class="text-center p-6" style="background: var(--bg-alt); border-radius: var(--radius-lg);">
+                    <i class="fa-brands fa-whatsapp text-3xl mb-4" style="color: #25d366;"></i>
+                    <h4 class="font-bold text-sm uppercase mb-2">3. Contact Seller</h4>
+                    <p class="text-xs" style="color: var(--text-muted);">Chat via WhatsApp or place a COD order</p>
+                </div>
+                <div class="text-center p-6" style="background: var(--bg-alt); border-radius: var(--radius-lg);">
+                    <i class="fa-solid fa-handshake text-3xl mb-4" style="color: var(--accent);"></i>
+                    <h4 class="font-bold text-sm uppercase mb-2">4. Meet & Pay</h4>
+                    <p class="text-xs" style="color: var(--text-muted);">Meet on campus and pay via Cash on Delivery</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Info Table (HTML Table requirement) -->
+        <section class="mt-10 mb-8">
+            <h2 class="section-title">Why CollegeMarket?</h2>
+            <div class="overflow-x-auto mt-4">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Feature</th>
+                            <th>Benefit</th>
+                            <th>Details</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="font-semibold">Campus Community</td>
+                            <td>Trust & Safety</td>
+                            <td>Only verified college students can buy and sell.</td>
+                        </tr>
+                        <tr>
+                            <td class="font-semibold">Cash on Delivery</td>
+                            <td>Zero Fraud Risk</td>
+                            <td>Pay only when you receive the item on campus.</td>
+                        </tr>
+                        <tr>
+                            <td class="font-semibold">WhatsApp Connect</td>
+                            <td>Instant Communication</td>
+                            <td>Chat directly with sellers before buying.</td>
+                        </tr>
+                        <tr>
+                            <td class="font-semibold">Same-Day Pickup</td>
+                            <td>No Shipping Wait</td>
+                            <td>Meet at the library, canteen, or hostel.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <!-- ====== Footer ====== -->
+    <footer class="site-footer">
+        <div class="footer-grid">
+            <div class="footer-brand-col footer-col">
+                <div class="footer-logo">COLLEGE<span>MARKET</span></div>
+                <p>The easiest way for college students to buy and sell within their campus community. Safe, fast, and
+                    free.</p>
+                <div class="footer-social-icons">
+                    <a href="#"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="#"><i class="fa-brands fa-twitter"></i></a>
+                    <a href="#"><i class="fa-brands fa-linkedin"></i></a>
+                    <a href="#"><i class="fa-brands fa-github"></i></a>
+                </div>
+            </div>
+            <div class="footer-col">
+                <h4>Categories</h4>
+                <ul>
+                    <li onclick="location.href='buy.html?cat=Textbooks'">Textbooks</li>
+                    <li onclick="location.href='buy.html?cat=Electronics'">Electronics</li>
+                    <li onclick="location.href='buy.html?cat=Cycles'">Cycles</li>
+                    <li onclick="location.href='buy.html?cat=Clothing'">Clothing</li>
+                    <li onclick="location.href='buy.html?cat=Furniture'">Furniture</li>
+                    <li onclick="location.href='buy.html?cat=Sports'">Sports</li>
+                    <li onclick="location.href='buy.html?cat=Instruments'">Instruments</li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Trending</h4>
+                <ul>
+                    <li onclick="location.href='buy.html?q=Calculator'">Calculators</li>
+                    <li onclick="location.href='buy.html?q=Laptop'">Laptops</li>
+                    <li onclick="location.href='buy.html?q=Notes'">Notes</li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li onclick="location.href='home.html'">Home</li>
+                    <li onclick="location.href='buy.html'">Browse All</li>
+                    <li onclick="location.href='sell.html'">Sell an Item</li>
+                    <li onclick="location.href='dashboard.html'">My Wishlist</li>
+                    <li onclick="location.href='dashboard.html'">My Profile</li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            &copy; 2026 CollegeMarketPlace. Made for students, by students.
+        </div>
+    </footer>
+
+    <!-- ====== Scripts ====== -->
+    <script src="js/script.js?v=20260309"></script>
+    <script>
+        // Load featured products on homepage using AJAX fetch
+        $(document).ready(async function () {
+            const products = await fetchProducts();
+            const grid = $('#featured-grid');
+
+            // Update hero stats directly (no animation)
+            const statProducts = document.getElementById('stat-products');
+            const statUsers = document.getElementById('stat-users');
+            if (statProducts) statProducts.textContent = products.length;
+            const usersCount = (JSON.parse(localStorage.getItem('cm_users')) || []).length;
+            if (statUsers) statUsers.textContent = usersCount || 1;
+
+            if (products.length === 0) {
+                grid.html('<div class="empty-state" style="grid-column:1/-1;"><i class="fa-solid fa-box-open"></i><p>No products listed yet. Be the first to sell!</p></div>');
+                return;
+            }
+
+            // ES6 map + template literals to render cards
+            const html = products.map(p => renderProductCard(p)).join('');
+            grid.html(html);
+        });
+    </script>
+</body>
+
+</html>
