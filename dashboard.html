@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | CollegeMarketPlace</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+</head>
+
+<body class="flex flex-col min-h-screen">
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <a href="home.html" class="navbar-logo"><i class="fa-solid fa-graduation-cap"></i> College <span>Market</span>
+            Place</a>
+        <button class="nav-toggle" id="nav-toggle"><i class="fa-solid fa-bars"></i></button>
+        <div class="navbar-actions" id="navbar-actions"></div>
+    </nav>
+
+    <!-- Main Dashboard -->
+    <main class="flex-grow" style="padding: 2rem 8%;">
+
+        <!-- Welcome Header -->
+        <div class="dash-header">
+            <div>
+                <h2 id="welcome-msg">My Dashboard</h2>
+                <p id="user-info">Loading...</p>
+            </div>
+            <div class="flex gap-3 flex-wrap">
+                <a href="sell.html" class="btn btn-accent"><i class="fa-solid fa-plus"></i> Post Ad</a>
+                <button class="btn btn-outline" onclick="logout()"><i class="fa-solid fa-right-from-bracket"></i>
+                    Logout</button>
+            </div>
+        </div>
+
+        <!-- Dashboard Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+
+            <!-- My Listings -->
+            <section>
+                <h3 class="section-title"><i class="fa-solid fa-tag"></i> My Listings</h3>
+                <div id="my-listings" class="product-grid" style="grid-template-columns: 1fr;">
+                    <!-- Populated by JS -->
+                </div>
+            </section>
+
+            <!-- My Orders -->
+            <section>
+                <h3 class="section-title"><i class="fa-solid fa-receipt"></i> My Orders</h3>
+                <div class="overflow-x-auto">
+                    <table class="data-table" id="orders-table">
+                        <thead>
+                            <tr>
+                                <th>Order ID</th>
+                                <th>Product</th>
+                                <th>Price</th>
+                                <th>Date</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="orders-body">
+                            <!-- Populated by JS -->
+                        </tbody>
+                    </table>
+                </div>
+                <div id="no-orders" class="empty-state hidden">
+                    <i class="fa-solid fa-bag-shopping"></i>
+                    <p>No orders placed yet. Start shopping!</p>
+                </div>
+            </section>
+
+        </div>
+
+        <!-- Wishlist Section -->
+        <section class="mt-10" id="wishlist-section">
+            <h3 class="section-title"><i class="fa-solid fa-heart"></i> My Wishlist</h3>
+            <div id="wishlist-grid" class="product-grid">
+                <!-- Populated by JS -->
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ====== Footer ====== -->
+    <footer class="site-footer">
+        <div class="footer-grid">
+            <div class="footer-brand-col footer-col">
+                <div class="footer-logo">COLLEGE<span>MARKET</span></div>
+                <p>The easiest way for college students to buy and sell within their campus community. Safe, fast, and
+                    free.</p>
+                <div class="footer-social-icons">
+                    <a href="#"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="#"><i class="fa-brands fa-twitter"></i></a>
+                    <a href="#"><i class="fa-brands fa-linkedin"></i></a>
+                    <a href="#"><i class="fa-brands fa-github"></i></a>
+                </div>
+            </div>
+            <div class="footer-col">
+                <h4>Categories</h4>
+                <ul>
+                    <li onclick="location.href='buy.html?cat=Textbooks'">Textbooks</li>
+                    <li onclick="location.href='buy.html?cat=Electronics'">Electronics</li>
+                    <li onclick="location.href='buy.html?cat=Cycles'">Cycles</li>
+                    <li onclick="location.href='buy.html?cat=Clothing'">Clothing</li>
+                    <li onclick="location.href='buy.html?cat=Furniture'">Furniture</li>
+                    <li onclick="location.href='buy.html?cat=Sports'">Sports</li>
+                    <li onclick="location.href='buy.html?cat=Instruments'">Instruments</li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Trending</h4>
+                <ul>
+                    <li onclick="location.href='buy.html?q=Calculator'">Calculators</li>
+                    <li onclick="location.href='buy.html?q=Laptop'">Laptops</li>
+                    <li onclick="location.href='buy.html?q=Notes'">Notes</li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li onclick="location.href='home.html'">Home</li>
+                    <li onclick="location.href='buy.html'">Browse All</li>
+                    <li onclick="location.href='sell.html'">Sell an Item</li>
+                    <li onclick="location.href='dashboard.html'">My Wishlist</li>
+                    <li onclick="location.href='dashboard.html'">My Profile</li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            &copy; 2026 CollegeMarketPlace. Made for students, by students.
+        </div>
+    </footer>
+
+    <script src="js/script.js?v=20260309"></script>
+    <script>
+        $(document).ready(async function () {
+            if (!AppState.currentUser) return;
+
+            const { name, email, collegeId } = AppState.currentUser;
+
+            // Dynamic DOM manipulation for welcome message
+            $('#welcome-msg').text(`Welcome back, ${name}!`);
+            $('#user-info').text(`${email} • College ID: ${collegeId}`);
+
+            // ---- My Listings ----
+            const myListings = localProducts.filter(p => p.seller === name || p.gmail === email);
+
+            if (myListings.length === 0) {
+                $('#my-listings').html(`
+          <div class="empty-state">
+            <i class="fa-solid fa-store"></i>
+            <p>You haven't listed anything yet.</p>
+            <a href="sell.html" class="btn btn-accent mt-4" style="display:inline-flex;">Post Your First Ad</a>
+          </div>
+        `);
+            } else {
+                // ES6 map to render product cards
+                const listingsHTML = myListings.map(p => `
+          <div class="product-card" style="cursor:default;">
+            <div class="card-img-wrap" style="height:140px;">
+              <img src="${p.image}" alt="${p.name}">
+            </div>
+            <div class="card-body">
+              <div class="card-price">${formatPrice(p.price)}</div>
+              <div class="card-title">${p.name}</div>
+              <div class="card-seller">${p.category}</div>
+            </div>
+          </div>
+        `).join('');
+                $('#my-listings').html(listingsHTML);
+            }
+
+            // ---- My Orders ----
+            const myOrders = AppState.orders.filter(o => o.buyer === name);
+
+            if (myOrders.length === 0) {
+                $('#orders-table').addClass('hidden');
+                $('#no-orders').removeClass('hidden');
+            } else {
+                // ES6 map for table rows
+                const rowsHTML = myOrders.map(o => `
+          <tr>
+            <td class="font-semibold">${o.orderId}</td>
+            <td>${o.productName}</td>
+            <td>${formatPrice(o.productPrice)}</td>
+            <td>${o.date}</td>
+            <td><span class="status-badge status-pending">${o.status}</span></td>
+          </tr>
+        `).join('');
+                $('#orders-body').html(rowsHTML);
+            }
+
+            // ---- My Wishlist ----
+            const allProducts = await fetchProducts();
+            const wishlistedProducts = allProducts.filter(p => AppState.wishlist.includes(p.id));
+
+            if (wishlistedProducts.length === 0) {
+                $('#wishlist-grid').html(`
+          <div class="empty-state" style="grid-column:1/-1;">
+            <i class="fa-regular fa-heart"></i>
+            <p>Your wishlist is empty. Browse products and hit the heart icon!</p>
+          </div>
+        `);
+            } else {
+                const wishHTML = wishlistedProducts.map(p => renderProductCard(p)).join('');
+                $('#wishlist-grid').html(wishHTML);
+            }
+
+            // if user arrived via #wishlist anchor, scroll down after content is added
+            if (window.location.hash === '#wishlist') {
+                const section = document.getElementById('wishlist-section');
+                if (section) section.scrollIntoView({ behavior: 'smooth' });
+            }
+        });
+    </script>
+
+</body>
+
+</html>
