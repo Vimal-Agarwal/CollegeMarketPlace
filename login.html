@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | CollegeMarketPlace</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+</head>
+
+<body>
+
+    <div class="auth-wrapper">
+        <div class="auth-card">
+            <!-- Logo -->
+            <div class="text-center mb-6">
+                <a href="home.html" class="navbar-logo text-2xl"><i class="fa-solid fa-graduation-cap"></i> College
+                    <span>Market</span> Place</a>
+            </div>
+
+            <h2>Welcome Back</h2>
+            <p class="subtitle">Don't have an account? <a href="signup.html">Sign up</a></p>
+
+            <form id="login-form">
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" class="form-input" placeholder="you@college.ac.in" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" class="form-input" placeholder="Enter your password" required>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block btn-lg mt-2">
+                    <i class="fa-solid fa-right-to-bracket"></i> Sign In
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/script.js?v=20260309"></script>
+    <script>
+        // jQuery form submission for login
+        $('#login-form').submit(function (e) {
+            e.preventDefault();
+
+            const email = $('#email').val().trim();
+            const password = $('#password').val();
+
+            if (!email || !password) {
+                alert('Please fill in all fields!');
+                return;
+            }
+
+            // ES6 find method to validate credentials in LocalStorage
+            const user = AppState.users.find(u => u.email === email && u.password === password);
+
+            if (user) {
+                localStorage.setItem('cm_currentUser', JSON.stringify(user));
+                window.location.href = 'dashboard.html';
+            } else {
+                alert('Invalid email or password! Please try again.');
+            }
+        });
+    </script>
+    <!-- ====== Footer ====== -->
+    <footer class="site-footer">
+        <div class="footer-grid">
+            <div class="footer-brand-col footer-col">
+                <div class="footer-logo">COLLEGE<span>MARKET</span></div>
+                <p>The easiest way for college students to buy and sell within their campus community. Safe, fast, and
+                    free.</p>
+                <div class="footer-social-icons">
+                    <a href="#"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="#"><i class="fa-brands fa-twitter"></i></a>
+                    <a href="#"><i class="fa-brands fa-linkedin"></i></a>
+                    <a href="#"><i class="fa-brands fa-github"></i></a>
+                </div>
+            </div>
+            <div class="footer-col">
+                <h4>Categories</h4>
+                <ul>
+                    <li onclick="location.href='buy.html?cat=Textbooks'">Textbooks</li>
+                    <li onclick="location.href='buy.html?cat=Electronics'">Electronics</li>
+                    <li onclick="location.href='buy.html?cat=Cycles'">Cycles</li>
+                    <li onclick="location.href='buy.html?cat=Clothing'">Clothing</li>
+                    <li onclick="location.href='buy.html?cat=Furniture'">Furniture</li>
+                    <li onclick="location.href='buy.html?cat=Sports'">Sports</li>
+                    <li onclick="location.href='buy.html?cat=Instruments'">Instruments</li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Trending</h4>
+                <ul>
+                    <li onclick="location.href='buy.html?q=Calculator'">Calculators</li>
+                    <li onclick="location.href='buy.html?q=Laptop'">Laptops</li>
+                    <li onclick="location.href='buy.html?q=Notes'">Notes</li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li onclick="location.href='home.html'">Home</li>
+                    <li onclick="location.href='buy.html'">Browse All</li>
+                    <li onclick="location.href='sell.html'">Sell an Item</li>
+                    <li onclick="location.href='dashboard.html'">My Wishlist</li>
+                    <li onclick="location.href='dashboard.html'">My Profile</li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            &copy; 2026 CollegeMarketPlace. Made for students, by students.
+        </div>
+    </footer>
+
+</body>
+
+</html>
