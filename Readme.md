@@ -1,6 +1,6 @@
 # CollegeMarketPlace
 
-A platform for college students to buy and sell products within their campus. Built with MERN stack as part of FULL STACK PROJECT at SKIT, Jaipur.
+A platform for college students to buy and sell products within their campus. Built with MERN stack as part of FULL STACK DEVELOPMENT at SKIT, Jaipur.
 
 ## Tech Stack
 - **Frontend** — React.js, React Router v6
